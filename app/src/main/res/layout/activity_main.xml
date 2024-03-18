@@ -40,16 +40,16 @@
         android:layout_marginBottom="52dp"
         android:entries="@array/languages"
         android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/submit_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="96dp"
+        android:layout_marginBottom="60dp"
         android:text="@string/submit_button"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextPhrase"
@@ -61,11 +61,10 @@
         android:id="@+id/editTextPhrase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="68dp"
-        android:hint="@string/phrase"
+        android:layout_marginBottom="88dp"
         app:layout_constraintBottom_toTopOf="@id/shake_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView

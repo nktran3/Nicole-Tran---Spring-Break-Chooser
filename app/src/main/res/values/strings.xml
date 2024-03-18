@@ -2,12 +2,15 @@
     <string name="app_name">Nicole Tran - Spring Break Chooser</string>
     <string name="app_title">Spring Break Chooser</string>
     <string name="select_language">Select a language:</string>
-    <string name="phrase">Say a phrase in the language you selected</string>
+    <string name="speech_prompt">Say a phrase in the language you selected</string>
+    <string name="speech_not_supported">Speech not supported</string>
     <string name="submit_button">Submit</string>
     <string name="shake">Shake phone vigorously to choose a vacation spot</string>
     <string-array name="languages">
+        <item>English</item>
         <item>Spanish</item>
         <item>French</item>
-        <item>Chinese</item>
+        <item>German</item>
+        <item>Vietnamese</item>
     </string-array>
 </resources>
