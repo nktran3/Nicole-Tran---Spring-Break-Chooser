@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.speech.*
 import android.widget.*
 import android.hardware.*
+import android.media.*
 import android.net.*
 import java.util.*
 import androidx.activity.result.contract.ActivityResultContracts
-import kotlin.math.sqrt
+import kotlin.math.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,11 +31,20 @@ class MainActivity : AppCompatActivity() {
 
     private val predefinedLocations = mapOf(
         "English" to listOf("geo:51.5074,-0.1278?z=10", "geo:-33.8688,151.2093?z=10"),
-        "Spanish" to listOf("geo:21.1619,-86.8515?z=10", "geo:41.3874, 2.1686?z=10", "geo:18.4671,-66.1185?z=10", ),
+        "Spanish" to listOf("geo:21.1619,-86.8515?z=10", "geo:41.3874, 2.1686?z=10", "geo:18.4671,-66.1185?z=10"),
         "French" to listOf("geo:48.8566,2.3522?z=10", "geo:46.2044,6.1432?z=10"),
         "German" to listOf("geo:52.5200,13.4050?z=10", "geo:49.6116,6.1319?z=10"),
         "Vietnamese" to listOf("geo:10.8231,106.6297?z=10", "geo:21.0278,105.8342?z=10"),
         "Italian" to listOf("geo:41.9028,12.4964?z=10", "geo:45.4642,9.1900?z=10")
+    )
+
+    private val greetings = mapOf(
+        "English" to R.raw.greeting_english,
+        "Spanish" to R.raw.greeting_spanish,
+        "French" to R.raw.greeting_french,
+        "German" to R.raw.greeting_german,
+        "Vietnamese" to R.raw.greeting_vietnamese,
+        "Italian" to R.raw.greeting_italian
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,6 +117,7 @@ class MainActivity : AppCompatActivity() {
 
             if (acceleration > 10) {
                 val selectedLanguage = languageSpinner.selectedItem.toString()
+
                 val locations = predefinedLocations[selectedLanguage]
                 val randomLocation = locations?.random()
                 randomLocation?.let { location ->
@@ -115,6 +126,16 @@ class MainActivity : AppCompatActivity() {
                     mapIntent.setPackage("com.google.android.apps.maps")
                     startActivity(mapIntent)
                 }
+
+                val greeting =  greetings[selectedLanguage]
+                greeting?.let { greetingId ->
+                    val mediaPlayer = MediaPlayer.create(this@MainActivity, greetingId)
+                    mediaPlayer?.start()
+                    mediaPlayer?.setOnCompletionListener {
+                        it.release()
+                    }
+                }
+
             }
         }
         override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
