@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.speech.*
 import android.widget.*
 import android.hardware.*
+import android.net.*
 import java.util.*
 import androidx.activity.result.contract.ActivityResultContracts
 import kotlin.math.sqrt
@@ -26,6 +27,16 @@ class MainActivity : AppCompatActivity() {
             editTextPhrase.setText(data?.get(0))
         }
     }
+
+    private val predefinedLocations = mapOf(
+        "English" to listOf("geo:51.5074,-0.1278?z=10", "geo:-33.8688,151.2093?z=10"),
+        "Spanish" to listOf("geo:21.1619,-86.8515?z=10", "geo:41.3874, 2.1686?z=10", "geo:18.4671,-66.1185?z=10", ),
+        "French" to listOf("geo:48.8566,2.3522?z=10", "geo:46.2044,6.1432?z=10"),
+        "German" to listOf("geo:52.5200,13.4050?z=10", "geo:49.6116,6.1319?z=10"),
+        "Vietnamese" to listOf("geo:10.8231,106.6297?z=10", "geo:21.0278,105.8342?z=10"),
+        "Italian" to listOf("geo:41.9028,12.4964?z=10", "geo:45.4642,9.1900?z=10")
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,6 +57,8 @@ class MainActivity : AppCompatActivity() {
                 languageTag = "de"
             } else if (selectedLanguage =="Vietnamese") {
                 languageTag = "vi"
+            } else if (selectedLanguage =="Italian") {
+                languageTag = "it"
             } else {
                 languageTag = Locale.getDefault().toLanguageTag()
             }
@@ -83,7 +96,6 @@ class MainActivity : AppCompatActivity() {
 
     private val sensorListener: SensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent) {
-
             val x = event.values[0]
             val y = event.values[1]
             val z = event.values[2]
@@ -93,8 +105,16 @@ class MainActivity : AppCompatActivity() {
             val delta: Float = currentAcceleration - lastAcceleration
             acceleration = acceleration * 0.9f + delta
 
-            if (acceleration > 8) {
-                Toast.makeText(this@MainActivity, "Shake event detected", Toast.LENGTH_SHORT).show()
+            if (acceleration > 10) {
+                val selectedLanguage = languageSpinner.selectedItem.toString()
+                val locations = predefinedLocations[selectedLanguage]
+                val randomLocation = locations?.random()
+                randomLocation?.let { location ->
+                    val gmmIntentUri = Uri.parse(location)
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    startActivity(mapIntent)
+                }
             }
         }
         override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
